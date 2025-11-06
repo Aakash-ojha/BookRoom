@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Logo from "./Logo";
 
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-0);
@@ -10,7 +11,11 @@ const StyledSidebar = styled.aside`
 `;
 
 const Sidebar = () => {
-  return <StyledSidebar>Sidebar</StyledSidebar>;
+  return (
+    <StyledSidebar>
+      <Logo />
+    </StyledSidebar>
+  );
 };
 
 export default Sidebar;
