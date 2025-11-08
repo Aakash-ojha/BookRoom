@@ -2,13 +2,13 @@ import LogoImg from "../assets/Logo.png";
 
 const Logo = () => {
   return (
-    <div className="flex items-center  gap-0 relative -top-22 p-0">
+    <div className=" flex flex-col items-center relative -top-12">
       <img
-        className="bg-black w-20 h-40 object-cover"
+        className=" w-25 h-40 object-cover  overflow-hidden"
         src={LogoImg}
         alt="BookRoomLogo"
       />
-      <h1 className="font-bold text-4xl">BookRoom</h1>
+      <h1 className="font-bold text-5xl relative -top-12">BookRoom</h1>
     </div>
   );
 };

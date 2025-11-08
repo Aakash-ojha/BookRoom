@@ -9,6 +9,9 @@ const StyledSidebar = styled.aside`
   border-radius: 1px solid var(--color-gray-100);
 
   grid-row: 1/3;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
 `;
 
 const Sidebar = () => {
