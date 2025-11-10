@@ -11,13 +11,20 @@ import Login from "./pages/Login";
 import Cabins from "./pages/Cabins";
 import User from "./pages/User";
 import Settings from "./pages/Settings";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  queries: {
+    staleTime: 60 * 1000,
+    cacheTime: 2 * 60 * 1000,
+  },
+});
 
 export const App = () => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
         <BrowserRouter>
           <Routes>
