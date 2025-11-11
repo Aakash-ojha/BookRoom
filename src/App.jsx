@@ -14,9 +14,12 @@ import Settings from "./pages/Settings";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
-  queries: {
-    staleTime: 60 * 1000,
-    cacheTime: 2 * 60 * 1000,
+  defaultOptions: {
+    queries: {
+      staleTime: 10 * 1000,
+      refetchInterval: 10 * 1000, //auto-refetch every 1 min
+      cacheTime: 60 * 1000,
+    },
   },
 });
 
