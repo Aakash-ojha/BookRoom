@@ -12,6 +12,7 @@ import Cabins from "./pages/Cabins";
 import User from "./pages/User";
 import Settings from "./pages/Settings";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ToastContainer } from "react-toastify";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,14 @@ export const App = () => {
             <Route path="/login" element={<Login />} />
           </Routes>
         </BrowserRouter>
+
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          theme="light"
+          pauseOnHover={false}
+        />
       </QueryClientProvider>
     </>
   );

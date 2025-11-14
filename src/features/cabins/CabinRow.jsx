@@ -3,13 +3,15 @@ import React from "react";
 
 import styled from "styled-components";
 import { deleteCabin } from "../../services/apiCabins";
+import { toast } from "react-toastify";
+import Button from "../../ui/Button";
 
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
   column-gap: 2.4rem;
   align-items: center;
-  padding: 1.4rem 2.4rem;
+  padding: 2.4rem 2.4rem;
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
@@ -43,44 +45,8 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
-const Button = styled.button`
-  background-color: #121125;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: #0b0914;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    background-color: #1e1e7f;
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    background-color: #122039;
-    cursor: not-allowed;
-  }
-`;
-
 const CabinRow = ({ cabin }) => {
-  const {
-    id,
-    created_at,
-    name,
-    maxCapacity,
-    regularPrice,
-    discount,
-    description,
-    image,
-  } = cabin;
+  const { id, name, maxCapacity, regularPrice, discount, image } = cabin;
 
   const queryClient = useQueryClient();
 
@@ -88,10 +54,10 @@ const CabinRow = ({ cabin }) => {
     // mutationFn: (id) => deleteCabin(id),
     mutationFn: deleteCabin,
     onSuccess: () => {
-      alert("Cabin succesfully deleted");
+      toast.success("Cabin succesfully deleted");
       queryClient.invalidateQueries({ queryKey: ["cabin"] });
     },
-    onError: (err) => alert(err.message),
+    onError: (err) => toast.error(err.message),
   });
 
   return (
