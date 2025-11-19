@@ -39,8 +39,7 @@ const CabinTable = () => {
   });
 
   if (isLoading === true) return <Loader />;
-  if (error) return <p>Error</p>;
-  console.log(cabins);
+  if (error) return <p>{error.message}</p>;
 
   return (
     <Table>

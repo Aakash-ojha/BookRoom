@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 import { deleteCabin } from "../../services/apiCabins";
 import { toast } from "react-toastify";
 import Button from "../../ui/Button";
+import CreateCabinForm from "./CreateCabinForm";
 
 const TableRow = styled.div`
   display: grid;
@@ -46,6 +47,7 @@ const Discount = styled.div`
 `;
 
 const CabinRow = ({ cabin }) => {
+  const [showForm, setShowForm] = useState(false);
   const { id, name, maxCapacity, regularPrice, discount, image } = cabin;
 
   const queryClient = useQueryClient();
@@ -61,16 +63,24 @@ const CabinRow = ({ cabin }) => {
   });
 
   return (
-    <TableRow role="row">
-      <Img src={image} alt={id} />
-      <Cabin>{name}</Cabin>
-      <Cabin>Fill upto {maxCapacity} guests</Cabin>
-      <Price>{regularPrice}</Price>
-      <Price>{discount}</Price>
-      <Button onClick={() => mutate(id)} disabled={isPending}>
-        {isPending ? "Deleting..." : "Delete"}
-      </Button>
-    </TableRow>
+    <>
+      <TableRow role="row">
+        <Img src={image} alt={id} />
+        <Cabin>{name}</Cabin>
+        <Cabin>Fill upto {maxCapacity} guests</Cabin>
+        <Price>{regularPrice}</Price>
+        <Price>{discount}</Price>
+
+        <div className="flex flex-row gap-5">
+          <Button onClick={() => setShowForm(!showForm)}>Edit</Button>
+          <Button onClick={() => mutate(id)} disabled={isPending}>
+            {isPending ? "Deleting..." : "Delete"}
+          </Button>
+        </div>
+      </TableRow>
+
+      {showForm && <CreateCabinForm cabinToEdit={cabin} />}
+    </>
   );
 };
 
