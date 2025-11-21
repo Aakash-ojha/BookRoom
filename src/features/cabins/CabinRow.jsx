@@ -1,18 +1,17 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
-
+import { useState } from "react";
 import styled from "styled-components";
-import { deleteCabin } from "../../services/apiCabins";
-import { toast } from "react-toastify";
 import Button from "../../ui/Button";
 import CreateCabinForm from "./CreateCabinForm";
+import { useDeleteCabin } from "./useDeleteCabin";
+import { useCreateCabin } from "./useCreateCabin";
 
 const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 2.6fr;
   column-gap: 2.4rem;
   align-items: center;
-  padding: 2.4rem 2.4rem;
+
+  padding: 1.4rem 2.4rem;
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
@@ -25,7 +24,7 @@ const Img = styled.img`
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
-  transform: scale(1.5) translateX(-7px);
+  /* transform: scale(1.5) translateX(-7px); */
 `;
 
 const Cabin = styled.div`
@@ -37,6 +36,7 @@ const Cabin = styled.div`
 
 const Price = styled.div`
   font-family: "Sono";
+  align-items: center;
   font-weight: 600;
 `;
 
@@ -48,19 +48,21 @@ const Discount = styled.div`
 
 const CabinRow = ({ cabin }) => {
   const [showForm, setShowForm] = useState(false);
+  const { isDeleting, deleteCabin } = useDeleteCabin();
+
   const { id, name, maxCapacity, regularPrice, discount, image } = cabin;
 
-  const queryClient = useQueryClient();
+  const { createCabin, isCreatingCabin } = useCreateCabin();
 
-  const { isPending, mutate } = useMutation({
-    // mutationFn: (id) => deleteCabin(id),
-    mutationFn: deleteCabin,
-    onSuccess: () => {
-      toast.success("Cabin succesfully deleted");
-      queryClient.invalidateQueries({ queryKey: ["cabin"] });
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  function handleDuplicate() {
+    createCabin({
+      name: `copy ${name}`,
+      maxCapacity,
+      regularPrice,
+      discount,
+      image,
+    });
+  }
 
   return (
     <>
@@ -69,12 +71,15 @@ const CabinRow = ({ cabin }) => {
         <Cabin>{name}</Cabin>
         <Cabin>Fill upto {maxCapacity} guests</Cabin>
         <Price>{regularPrice}</Price>
-        <Price>{discount}</Price>
+        <Discount>{discount}</Discount>
 
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-row gap-2">
+          <Button onClick={handleDuplicate}>Duplicate</Button>
+
           <Button onClick={() => setShowForm(!showForm)}>Edit</Button>
-          <Button onClick={() => mutate(id)} disabled={isPending}>
-            {isPending ? "Deleting..." : "Delete"}
+
+          <Button onClick={() => deleteCabin(id)} disabled={isDeleting}>
+            {isDeleting ? "Deleting..." : "Delete"}
           </Button>
         </div>
       </TableRow>

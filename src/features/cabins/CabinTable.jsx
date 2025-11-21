@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { getCabins } from "../../services/apiCabins";
 import Loader from "../../ui/Loader";
 import styled from "styled-components";
 import CabinRow from "./CabinRow";
+import { useCabin } from "./useCabin";
 
 const Table = styled.div`
   width: 100%;
@@ -15,7 +14,7 @@ const Table = styled.div`
 
 const TableHeader = styled.header`
   display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 2.6fr;
   column-gap: 2.4rem;
   align-items: center;
 
@@ -25,18 +24,11 @@ const TableHeader = styled.header`
   letter-spacing: 0.4px;
   font-weight: 600;
   color: var(--color-grey-600);
-  padding: 1.6rem 2.4rem;
+  padding: 1.4rem 2.4rem;
 `;
 
 const CabinTable = () => {
-  const {
-    isLoading,
-    data: cabins,
-    error,
-  } = useQuery({
-    queryKey: ["cabin"],
-    queryFn: getCabins,
-  });
+  const { isLoading, cabins, error } = useCabin();
 
   if (isLoading === true) return <Loader />;
   if (error) return <p>{error.message}</p>;
