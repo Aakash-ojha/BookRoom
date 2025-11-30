@@ -50,7 +50,8 @@ const CabinRow = ({ cabin }) => {
   const [showForm, setShowForm] = useState(false);
   const { isDeleting, deleteCabin } = useDeleteCabin();
 
-  const { id, name, maxCapacity, regularPrice, discount, image } = cabin;
+  const { id, name, maxCapacity, regularPrice, discount, image, description } =
+    cabin;
 
   const { createCabin, isCreatingCabin } = useCreateCabin();
 
@@ -59,6 +60,7 @@ const CabinRow = ({ cabin }) => {
       name: `copy ${name}`,
       maxCapacity,
       regularPrice,
+      description,
       discount,
       image,
     });
