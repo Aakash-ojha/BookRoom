@@ -1,7 +1,13 @@
-import { Children } from "react";
+import React, {
+  cloneElement,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import { IoMdClose } from "react-icons/io";
+import { createPortal } from "react-dom";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -34,17 +40,57 @@ const CloseBtn = styled.button`
   font-size: 22px;
 `;
 
-function Modal({ children, onClose }) {
+const ModalContext = createContext();
+
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
+
+  const openModal = (name) => {
+    setOpenName(name);
+  };
+
+  const closeModal = () => {
+    setOpenName("");
+  };
+
   return (
-    <Overlay>
-      <Container>
-        <CloseBtn onClick={onClose}>
-          <IoMdClose />
-        </CloseBtn>
-        <div>{children}</div>
-      </Container>
-    </Overlay>
+    <ModalContext.Provider value={{ openName, openModal, closeModal }}>
+      {children}
+    </ModalContext.Provider>
   );
 }
+
+function Open({ children, opens }) {
+  const { openModal } = useContext(ModalContext);
+
+  return React.cloneElement(children, { onClick: () => openModal(opens) });
+}
+
+function Close({ children }) {
+  const { closeModal } = useContext(ModalContext);
+
+  return React.cloneElement(children, { onClick: () => closeModal() });
+}
+
+function Window({ children, name }) {
+  const { openName, closeModal } = useContext(ModalContext);
+  if (name !== openName) return null;
+  return createPortal(
+    <Overlay>
+      <Container>
+        <CloseBtn onClick={closeModal}>
+          <IoMdClose />
+        </CloseBtn>
+
+        <div>{cloneElement(children, { onCloseModal: closeModal })}</div>
+      </Container>
+    </Overlay>,
+    document.body
+  );
+}
+
+Modal.Open = Open;
+Modal.Close = Close;
+Modal.Window = Window;
 
 export default Modal;
