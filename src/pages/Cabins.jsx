@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
 import Row from "../ui/Row";
-import { getCabins } from "../services/apiCabins";
 import CabinTable from "../features/cabins/CabinTable";
 import Heading from "../ui/Heading";
-import Button from "../ui/Button";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import AddCabin from "../features/cabins/AddCabin";
 
 const Cabins = () => {
-  const [showForm, setShowForm] = useState(false);
-
   // const [cabins, setCabins] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
   // const [error, setError] = useState(null);
@@ -42,8 +37,7 @@ const Cabins = () => {
 
       <Row>
         <CabinTable />
-        <Button onClick={() => setShowForm(!showForm)}>Add new Cabin</Button>
-        {showForm && <CreateCabinForm />}
+        <AddCabin />
       </Row>
     </>
   );

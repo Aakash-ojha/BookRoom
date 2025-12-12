@@ -1,5 +1,9 @@
 import { useState } from "react";
+import { MdEdit, MdDelete } from "react-icons/md";
+import { FaCopy, FaSpinner } from "react-icons/fa";
+
 import styled from "styled-components";
+
 import Button from "../../ui/Button";
 import CreateCabinForm from "./CreateCabinForm";
 import { useDeleteCabin } from "./useDeleteCabin";
@@ -7,7 +11,7 @@ import { useCreateCabin } from "./useCreateCabin";
 
 const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 2.6fr;
+  grid-template-columns: 1fr 1.2fr 2.2fr 1fr 1fr 2.6fr;
   column-gap: 2.4rem;
   align-items: center;
 
@@ -20,7 +24,8 @@ const TableRow = styled.div`
 
 const Img = styled.img`
   display: block;
-  width: 6.4rem;
+  width: 100%;
+  max-width: 6.4rem;
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
@@ -76,12 +81,20 @@ const CabinRow = ({ cabin }) => {
         <Discount>{discount}</Discount>
 
         <div className="flex flex-row gap-2">
-          <Button onClick={handleDuplicate}>Duplicate</Button>
+          <Button onClick={handleDuplicate} title="Duplicate">
+            <FaCopy />
+          </Button>
 
-          <Button onClick={() => setShowForm(!showForm)}>Edit</Button>
+          <Button onClick={() => setShowForm(!showForm)} title="Edit">
+            <MdEdit />
+          </Button>
 
-          <Button onClick={() => deleteCabin(id)} disabled={isDeleting}>
-            {isDeleting ? "Deleting..." : "Delete"}
+          <Button
+            onClick={() => deleteCabin(id)}
+            disabled={isDeleting}
+            title="Delete"
+          >
+            {isDeleting ? <FaSpinner /> : <MdDelete />}
           </Button>
         </div>
       </TableRow>

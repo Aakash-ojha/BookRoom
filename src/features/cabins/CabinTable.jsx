@@ -14,7 +14,7 @@ const Table = styled.div`
 
 const TableHeader = styled.header`
   display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 2.6fr;
+  grid-template-columns: 1fr 1.2fr 2.2fr 1fr 1fr 2.6fr;
   column-gap: 2.4rem;
   align-items: center;
 
@@ -36,11 +36,12 @@ const CabinTable = () => {
   return (
     <Table>
       <TableHeader>
-        <div></div>
+        <div>image</div>
         <div>Cabin</div>
         <div>Capacity</div>
         <div>Price</div>
         <div>Discount</div>
+        <div>Button</div>
       </TableHeader>
 
       {cabins.map((cabin) => (
