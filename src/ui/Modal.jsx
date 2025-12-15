@@ -2,7 +2,9 @@ import React, {
   cloneElement,
   createContext,
   useContext,
+  useEffect,
   useState,
+  useRef,
 } from "react";
 import styled from "styled-components";
 import Button from "./Button";
@@ -13,6 +15,7 @@ export const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background-color: var(--backdrop-color);
+
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -73,11 +76,40 @@ function Close({ children }) {
 }
 
 function Window({ children, name }) {
+  const ref = useRef();
+
   const { openName, closeModal } = useContext(ModalContext);
+
+  useEffect(
+    function () {
+      function handleClick(e) {
+        if (ref.current && !ref.current.contains(e.target)) {
+          console.log("click all");
+          closeModal();
+        }
+      }
+
+      function handleKeyDown(e) {
+        if (e.key === "Escape") {
+          closeModal();
+        }
+      }
+
+      document.addEventListener("click", handleClick, true);
+      document.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        document.removeEventListener("click", handleClick, true);
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    },
+    [closeModal]
+  );
+
   if (name !== openName) return null;
   return createPortal(
     <Overlay>
-      <Container>
+      <Container ref={ref}>
         <CloseBtn onClick={closeModal}>
           <IoMdClose />
         </CloseBtn>
